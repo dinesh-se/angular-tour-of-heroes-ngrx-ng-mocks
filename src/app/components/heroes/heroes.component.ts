@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { NgFor, NgIf, UpperCasePipe } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf, UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 import { HeroService } from '@services/hero.service';
 import { Hero } from '@model/hero';
 import { HeroDetailComponent } from '@components/hero-detail/hero-detail.component';
+import { Store } from '@ngrx/store';
+import { HeroesState } from 'src/app/store/hero.reducer';
+import { addHero, loadHeroes } from 'src/app/store/hero.action';
+import { Observable } from 'rxjs';
+import { selectAllHeroes, selectHeroesError, selectHeroesLoading } from '@store/hero.selector';
 
 @Component({
   selector: 'app-heroes',
@@ -16,37 +21,34 @@ import { HeroDetailComponent } from '@components/hero-detail/hero-detail.compone
     NgIf,
     NgFor,
     HeroDetailComponent,
-    RouterLink
+    RouterLink,
+    AsyncPipe
   ],
   templateUrl: './heroes.component.html',
   styleUrl: './heroes.component.scss'
 })
 export class HeroesComponent implements OnInit {
-  heroes: Hero[] = [];
-  selectedHero?: Hero;
+  heroes$!: Observable<Hero[]>;
+  loading$!: Observable<boolean>;
+  error$!: Observable<any>;
 
-  constructor(private heroService: HeroService) {}
+  constructor(private store: Store<HeroesState>) {}
 
   ngOnInit(): void {
-    this.getHeroes();
-  }
-
-  getHeroes(): void {
-    this.heroService.getHeroes()
-      .subscribe(heroes => this.heroes = heroes);
+    this.store.dispatch(loadHeroes());
+    this.heroes$ = this.store.select(selectAllHeroes);
+    this.loading$ = this.store.select(selectHeroesLoading);
+    this.error$ = this.store.select(selectHeroesError);
   }
 
   add(name: string): void {
     name = name.trim();
     if (!name) { return; }
-    this.heroService.addHero({ name } as Hero)
-      .subscribe(hero => {
-        this.heroes.push(hero);
-      });
+    this.store.dispatch(addHero({ name }));
   }
 
   delete(hero: Hero): void {
-    this.heroes = this.heroes.filter(h => h !== hero);
-    this.heroService.deleteHero(hero.id).subscribe();
+    // this.heroes = this.heroes.filter(h => h !== hero);
+    // this.heroService.deleteHero(hero.id).subscribe();
   }
 }
