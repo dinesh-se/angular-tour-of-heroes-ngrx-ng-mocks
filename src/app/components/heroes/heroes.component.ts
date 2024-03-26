@@ -3,12 +3,11 @@ import { AsyncPipe, NgFor, NgIf, UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
-import { HeroService } from '@services/hero.service';
 import { Hero } from '@model/hero';
 import { HeroDetailComponent } from '@components/hero-detail/hero-detail.component';
 import { Store } from '@ngrx/store';
 import { HeroesState } from 'src/app/store/hero.reducer';
-import { addHero, loadHeroes } from 'src/app/store/hero.action';
+import { addHero, deleteHero, loadHeroes } from 'src/app/store/hero.action';
 import { Observable } from 'rxjs';
 import { selectAllHeroes, selectHeroesError, selectHeroesLoading } from '@store/hero.selector';
 
@@ -48,7 +47,6 @@ export class HeroesComponent implements OnInit {
   }
 
   delete(hero: Hero): void {
-    // this.heroes = this.heroes.filter(h => h !== hero);
-    // this.heroService.deleteHero(hero.id).subscribe();
+    this.store.dispatch(deleteHero({ id: hero.id }))
   }
 }

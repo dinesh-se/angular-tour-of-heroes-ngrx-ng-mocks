@@ -5,6 +5,7 @@ import { Hero } from '@model/hero';
 
 // Define the shape of the state
 export interface HeroesState {
+  searchResults: Hero[];
   heroes: Hero[];
   loading: boolean;
   error: any;
@@ -12,6 +13,7 @@ export interface HeroesState {
 
 // Define the initial state
 export const initialState: HeroesState = {
+  searchResults: [],
   heroes: [],
   loading: false,
   error: null
@@ -35,6 +37,16 @@ const heroesReducer = createReducer(
   on(HeroActions.loadHeroesFailure, (state, { error }) => ({
     ...state,
     loading: false,
+    error
+  })),
+
+
+  on(HeroActions.searchHeroesSuccess, (state, { searchResults }) => ({
+    ...state,
+    searchResults,
+  })),
+  on(HeroActions.searchHeroesFailure, (state, { error }) => ({
+    ...state,
     error
   })),
 

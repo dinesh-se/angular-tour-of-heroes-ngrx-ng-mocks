@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 
 import { Hero } from '@model/hero';
 
-// Action to load heroes from the server
+
 export const loadHeroes = createAction('[Heroes] Load Heroes');
 
 // Action dispatched when heroes are successfully loaded
@@ -14,6 +14,21 @@ export const loadHeroesSuccess = createAction(
 // Action dispatched when there's an error loading heroes
 export const loadHeroesFailure = createAction(
   '[Heroes] Load Heroes Failure',
+  props<{ error: any }>()
+);
+
+export const searchHeroes = createAction(
+  '[Heroes] Search Heroes',
+  props<{ name: string }>()
+);
+
+export const searchHeroesSuccess = createAction(
+  '[Heroes] Search Heroes Success',
+  props<{ searchResults: Hero[] }>()
+);
+
+export const searchHeroesFailure = createAction(
+  '[Heroes] Search Heroes Failure',
   props<{ error: any }>()
 );
 

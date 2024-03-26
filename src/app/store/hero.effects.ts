@@ -25,6 +25,21 @@ export class HeroEffects {
     )
   );
 
+  searchHeroes$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(HeroActions.searchHeroes),
+      mergeMap(({ name }) =>
+        this.heroService.searchHeroes(name).pipe(
+          map((searchResults) => {
+            console.log(searchResults);
+            return HeroActions.searchHeroesSuccess({ searchResults })
+          }),
+          catchError((error) => of(HeroActions.searchHeroesFailure({ error })))
+        )
+      )
+    )
+  );
+
   addHero$ = createEffect(() =>
     this.actions$.pipe(
       ofType(HeroActions.addHero),

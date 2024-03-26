@@ -24,6 +24,11 @@ export const selectHeroesError = createSelector(
   (state: HeroesState) => state.error
 );
 
+export const selectSearchResults = createSelector(
+  selectHeroesState,
+  (state: HeroesState) => state.searchResults
+)
+
 // Select a hero by ID
 export const selectHeroById = (id: number) => createSelector(
   selectAllHeroes,

@@ -4,8 +4,11 @@ import { NgIf, UpperCasePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { HeroService } from '@services/hero.service';
 import { Hero } from '@model/hero';
+import { Store } from '@ngrx/store';
+import { HeroesState } from '@store/hero.reducer';
+import { updateHero } from '@store/hero.action';
+import { selectHeroById } from '@store/hero.selector';
 
 @Component({
   selector: 'app-hero-detail',
@@ -15,22 +18,24 @@ import { Hero } from '@model/hero';
   styleUrl: './hero-detail.component.scss'
 })
 export class HeroDetailComponent implements OnInit {
-  @Input() hero?: Hero;
+  hero!: Hero;
 
   constructor(
     private route: ActivatedRoute,
-    private heroService: HeroService,
-    private location: Location
+    private location: Location,
+    private store: Store<HeroesState>
   ) {}
 
   ngOnInit(): void {
-    this.getHero();
-  }
-
-  getHero(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.heroService.getHero(id)
-      .subscribe(hero => this.hero = hero);
+    this.store.select(selectHeroById(+id)).subscribe(hero => {
+      if(hero) {
+        this.hero = {
+          id: hero.id,
+          name: hero.name
+        };
+      }
+    })
   }
 
   goBack(): void {
@@ -39,8 +44,9 @@ export class HeroDetailComponent implements OnInit {
 
   save(): void {
     if (this.hero) {
-      this.heroService.updateHero(this.hero)
-        .subscribe(() => this.goBack());
+      this.store.dispatch(updateHero({ hero: this.hero }));
+      //TODO: refactor to go back when the state update is completed
+      this.goBack();
     }
   }
 }

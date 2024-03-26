@@ -10,6 +10,10 @@ import {
 
 import { HeroService } from '@services/hero.service';
 import { Hero } from '@model/hero';
+import { Store } from '@ngrx/store';
+import { HeroesState } from '@store/hero.reducer';
+import { searchHeroes } from '@store/hero.action';
+import { selectSearchResults } from '@store/hero.selector';
 
 @Component({
   selector: 'app-hero-search',
@@ -19,26 +23,26 @@ import { Hero } from '@model/hero';
   styleUrl: './hero-search.component.scss'
 })
 export class HeroSearchComponent implements OnInit {
-  heroes$!: Observable<Hero[]>;
+  searchResults$!: Observable<Hero[]>;
   private searchTerms = new Subject<string>();
 
-  constructor(private heroService: HeroService) {}
-
-  // Push a search term into the observable stream.
-  search(term: string): void {
-    this.searchTerms.next(term);
-  }
+  constructor(private store: Store<HeroesState>) {}
 
   ngOnInit(): void {
-    this.heroes$ = this.searchTerms.pipe(
-      // wait 300ms after each keystroke before considering the term
+    this.searchResults$ = this.store.select(selectSearchResults);
+    this.searchTerms.pipe(
       debounceTime(300),
-
-      // ignore new term if same as previous term
-      distinctUntilChanged(),
-
-      // switch to new search observable each time the term changes
-      switchMap((term: string) => this.heroService.searchHeroes(term)),
-    );
+      distinctUntilChanged())
+      .subscribe(query => {
+        this.search(query);
+      });
   }
+
+    onInputChange(query: string) {
+      this.searchTerms.next(query);
+    }
+
+    search(name: string): void {
+      this.store.dispatch(searchHeroes({ name }));
+    }
 }
