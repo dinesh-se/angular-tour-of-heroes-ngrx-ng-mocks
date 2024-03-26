@@ -14,14 +14,6 @@
     }
   }
 
-input {
-  display: block;
-  width: 100%;
-  padding: .5rem;
-  margin: 1rem 0;
-  box-sizing: border-box;
-}
-
   a {
     color: #333;
     text-decoration: none;
@@ -61,6 +53,16 @@ input {
     border-radius: 4px 0 0 4px;
   }
 }
+
+input {
+  padding: .5rem;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: #336699 auto 1px;
+  }
+}
+
 
 .add-button {
   padding: .5rem 1.5rem;

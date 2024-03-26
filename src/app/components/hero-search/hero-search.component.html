@@ -1,6 +1,6 @@
 <div id="search-component">
   <label for="search-box">Hero Search</label>
-  <input #searchBox id="search-box" (input)="onInputChange(searchBox.value)" />
+  <input [(ngModel)]="searchBoxQuery" id="search-box" (input)="onInputChange($event)" />
 
   <ul class="search-result">
     <li *ngFor="let hero of searchResults$ | async" >
