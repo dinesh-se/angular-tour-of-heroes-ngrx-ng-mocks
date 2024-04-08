@@ -1,0 +1,14 @@
+<div id="search-component">
+  <label for="search-box">Hero Search</label>
+  <ng-container *ngIf="{ query: searchQuery$ | async } as search">
+    <input #searchBox id="search-box" value="{{search.query}}"/>
+  </ng-container>
+
+  <ul class="search-result">
+    <li *ngFor="let hero of searchResults$ | async" >
+      <a routerLink="/detail/{{hero.id}}">
+        {{hero.name}}
+      </a>
+    </li>
+  </ul>
+</div>
