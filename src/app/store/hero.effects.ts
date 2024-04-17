@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { Action } from '@ngrx/store';
 
 import { HeroService } from '@services/hero.service';
 import * as HeroActions from './hero.action';
@@ -13,22 +14,21 @@ export class HeroEffects {
     private heroService: HeroService
   ) {}
 
-  loadHeroes$ = createEffect(() =>
+  loadHeroes$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(HeroActions.loadHeroes),
-      mergeMap(() =>
-        this.heroService.getHeroes().pipe(
-          map((heroes) => HeroActions.loadHeroesSuccess({ heroes })),
-          catchError((error) => of(HeroActions.loadHeroesFailure({ error })))
-        )
-      )
+      switchMap(() => this.heroService.getHeroes().pipe(
+        tap((heroes) => console.log('HEROES', heroes)),
+        map((heroes) => HeroActions.loadHeroesSuccess({ heroes })),
+        catchError((error) => of(HeroActions.loadHeroesFailure({ error })))
+      ))
     )
   );
 
-  searchHeroes$ = createEffect(() =>
+  searchHeroes$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(HeroActions.searchHeroes),
-      mergeMap(({ query }) =>
+      switchMap(({ query }) =>
         this.heroService.searchHeroes(query).pipe(
           map((searchResults) => HeroActions.searchHeroesSuccess({ searchResults })),
           catchError((error) => of(HeroActions.searchHeroesFailure({ error })))
@@ -37,10 +37,10 @@ export class HeroEffects {
     )
   );
 
-  addHero$ = createEffect(() =>
+  addHero$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(HeroActions.addHero),
-      mergeMap(({ name }) =>
+      switchMap(({ name }) =>
         this.heroService.addHero({ name }).pipe(
           map((addedHero) => HeroActions.addHeroSuccess({ hero: addedHero })),
           catchError((error) => of(HeroActions.addHeroFailure({ error })))
@@ -49,10 +49,10 @@ export class HeroEffects {
     )
   );
 
-  updateHero$ = createEffect(() =>
+  updateHero$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(HeroActions.updateHero),
-      mergeMap(({ hero }) =>
+      switchMap(({ hero }) =>
         this.heroService.updateHero(hero).pipe(
           map(() => HeroActions.updateHeroSuccess({ hero })),
           catchError((error) => of(HeroActions.updateHeroFailure({ error })))
@@ -61,10 +61,10 @@ export class HeroEffects {
     )
   );
 
-  deleteHero$ = createEffect(() =>
+  deleteHero$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(HeroActions.deleteHero),
-      mergeMap(({ id }) =>
+      switchMap(({ id }) =>
         this.heroService.deleteHero(id).pipe(
           map(() => HeroActions.deleteHeroSuccess({ id })),
           catchError((error) => of(HeroActions.deleteHeroFailure({ error })))

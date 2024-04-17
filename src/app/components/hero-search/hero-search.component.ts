@@ -1,25 +1,23 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { Observable, Subscription, fromEvent } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
-  map,
-  tap
+  map
 } from 'rxjs/operators';
 
 import { Hero } from '@model/hero';
 import { Store } from '@ngrx/store';
 import { HeroesState } from '@store/hero.reducer';
-import { searchHeroes } from '@store/hero.action';
-import { selectQuery, selectSearchResults } from '@store/hero.selector';
+import { HeroActions } from '@store/hero.action';
+import { HeroSelectors } from '@store/hero.selector';
 
 @Component({
   selector: 'app-hero-search',
   standalone: true,
-  imports: [NgFor, RouterLink, AsyncPipe, FormsModule, NgIf, ],
+  imports: [NgFor, RouterLink, AsyncPipe, NgIf],
   templateUrl: './hero-search.component.html',
   styleUrl: './hero-search.component.scss'
 })
@@ -34,18 +32,19 @@ export class HeroSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private store: Store<HeroesState>) {}
 
   ngOnInit(): void {
-    this.searchResults$ = this.store.select(selectSearchResults);
-    this.searchQuery$ = this.store.select(selectQuery);
+    this.searchResults$ = this.store.select(HeroSelectors.selectSearchResults);
+    this.searchQuery$ = this.store.select(HeroSelectors.selectQuery);
   }
 
   ngAfterViewInit(): void {
     this.inputListener = fromEvent(this.searchBox.nativeElement, 'input').pipe(
       map((event: any) => event.target.value),
       debounceTime(300),
-      distinctUntilChanged(),
-      tap((query: string) => {
-        this.store.dispatch(searchHeroes({ query }));
-      })).subscribe();
+      distinctUntilChanged()
+    ).subscribe((query) => {
+      console.log('CAME');
+      this.store.dispatch(HeroActions.searchHeroes({ query }));
+    });
   }
 
   ngOnDestroy(): void {

@@ -1,22 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AsyncPipe, NgFor, NgIf, UpperCasePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 import { Hero } from '@model/hero';
 import { HeroDetailComponent } from '@components/hero-detail/hero-detail.component';
 import { Store } from '@ngrx/store';
 import { HeroesState } from 'src/app/store/hero.reducer';
-import { addHero, deleteHero, loadHeroes } from 'src/app/store/hero.action';
+import { HeroActions } from '@store/hero.action';
 import { Observable } from 'rxjs';
-import { selectAllHeroes, selectHeroesError, selectHeroesLoading } from '@store/hero.selector';
+import { HeroSelectors } from '@store/hero.selector';
 
 @Component({
   selector: 'app-heroes',
   standalone: true,
   imports: [
     UpperCasePipe,
-    FormsModule,
     NgIf,
     NgFor,
     HeroDetailComponent,
@@ -28,25 +26,24 @@ import { selectAllHeroes, selectHeroesError, selectHeroesLoading } from '@store/
 })
 export class HeroesComponent implements OnInit {
   heroes$!: Observable<Hero[]>;
-  loading$!: Observable<boolean>;
-  error$!: Observable<any>;
+
+  @ViewChild('heroName') heroName!: ElementRef;
 
   constructor(private store: Store<HeroesState>) {}
 
   ngOnInit(): void {
-    this.store.dispatch(loadHeroes());
-    this.heroes$ = this.store.select(selectAllHeroes);
-    this.loading$ = this.store.select(selectHeroesLoading);
-    this.error$ = this.store.select(selectHeroesError);
+    this.store.dispatch(HeroActions.loadHeroes());
+    this.heroes$ = this.store.select(HeroSelectors.selectAllHeroes);
   }
 
   add(name: string): void {
     name = name.trim();
     if (!name) { return; }
-    this.store.dispatch(addHero({ name }));
+    this.store.dispatch(HeroActions.addHero({ name }));
+    this.heroName.nativeElement.value = '';
   }
 
   delete(hero: Hero): void {
-    this.store.dispatch(deleteHero({ id: hero.id }))
+    this.store.dispatch(HeroActions.deleteHero({ id: hero.id }))
   }
 }

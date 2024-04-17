@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppComponent should create the app component 1`] = `
+<mock-render>
+  <app-root>
+    <h1>
+      Tour of Heroes
+    </h1>
+    <nav>
+      <a
+        ariacurrentwhenactive="page"
+        routerlink="/dashboard"
+        routerlinkactive="active"
+      >
+        Dashboard
+      </a>
+      <a
+        ariacurrentwhenactive="page"
+        routerlink="/heroes"
+        routerlinkactive="active"
+      >
+        Heroes
+      </a>
+    </nav>
+    <router-outlet />
+    <app-messages />
+  </app-root>
+</mock-render>
+`;

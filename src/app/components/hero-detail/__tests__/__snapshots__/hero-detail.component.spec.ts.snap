@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HeroDetailComponent should create with hero details 1`] = `
+<mock-render>
+  <app-hero-detail>
+    <div>
+      <h2>
+        HERO 1 Details
+      </h2>
+      <div>
+        <span>
+          id: 
+        </span>
+        1
+      </div>
+      <div>
+        <label
+          for="hero-name"
+        >
+          Hero name: 
+        </label>
+        <input
+          id="hero-name"
+          placeholder="Hero name"
+        />
+      </div>
+      <button
+        class="back-btn"
+        type="button"
+      >
+        Go Back
+      </button>
+      <button
+        class="save-btn"
+        type="button"
+      >
+        Save
+      </button>
+    </div>
+  </app-hero-detail>
+</mock-render>
+`;

@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HeroSearchComponent should create search with query and results 1`] = `
+<mock-render>
+  <app-hero-search>
+    <div
+      id="search-component"
+    >
+      <label
+        for="search-box"
+      >
+        Hero Search
+      </label>
+      <input
+        id="search-box"
+      />
+      <ul
+        class="search-result"
+      >
+        <li>
+          <a>
+             Odd Hero 1 
+          </a>
+        </li>
+        <li>
+          <a>
+             Odd Hero 3 
+          </a>
+        </li>
+        <li>
+          <a>
+             Odd Hero 5 
+          </a>
+        </li>
+      </ul>
+    </div>
+  </app-hero-search>
+</mock-render>
+`;

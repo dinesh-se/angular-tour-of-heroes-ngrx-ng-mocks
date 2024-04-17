@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HeroesComponent should create 1`] = `
+<mock-render>
+  <app-heroes>
+    <h2>
+      My Heroes
+    </h2>
+    <div>
+      <label
+        for="new-hero"
+      >
+        Hero name: 
+      </label>
+      <input
+        id="new-hero"
+      />
+      <button
+        class="add-btn"
+        type="button"
+      >
+         Add hero 
+      </button>
+    </div>
+    <ul
+      class="heroes"
+    >
+      <li>
+        <a>
+          <span
+            class="badge"
+          >
+            1
+          </span>
+           Hero 1 
+        </a>
+        <button
+          class="delete-btn"
+          title="delete hero"
+          type="button"
+        >
+          x
+        </button>
+      </li>
+      <li>
+        <a>
+          <span
+            class="badge"
+          >
+            2
+          </span>
+           Hero 2 
+        </a>
+        <button
+          class="delete-btn"
+          title="delete hero"
+          type="button"
+        >
+          x
+        </button>
+      </li>
+      <li>
+        <a>
+          <span
+            class="badge"
+          >
+            3
+          </span>
+           Hero 3 
+        </a>
+        <button
+          class="delete-btn"
+          title="delete hero"
+          type="button"
+        >
+          x
+        </button>
+      </li>
+    </ul>
+  </app-heroes>
+</mock-render>
+`;

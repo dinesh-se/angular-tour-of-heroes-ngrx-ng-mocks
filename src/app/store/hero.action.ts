@@ -73,3 +73,21 @@ export const deleteHeroFailure = createAction(
   '[Heroes] Delete Hero Failure',
   props<{ error: any }>()
 );
+
+export const HeroActions = {
+  loadHeroes,
+  loadHeroesSuccess,
+  loadHeroesFailure,
+  searchHeroes,
+  searchHeroesSuccess,
+  searchHeroesFailure,
+  addHero,
+  addHeroSuccess,
+  addHeroFailure,
+  updateHero,
+  updateHeroSuccess,
+  updateHeroFailure,
+  deleteHero,
+  deleteHeroSuccess,
+  deleteHeroFailure
+};

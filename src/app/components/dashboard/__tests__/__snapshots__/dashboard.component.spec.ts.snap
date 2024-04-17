@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DashboardComponent should create with heroes 1`] = `
+<mock-render>
+  <app-dashboard>
+    <h2>
+      Top Heroes
+    </h2>
+    <div
+      class="heroes-menu"
+    >
+      <a>
+         Hero 2 
+      </a>
+      <a>
+         Hero 3 
+      </a>
+      <a>
+         Hero 4 
+      </a>
+      <a>
+         Hero 5 
+      </a>
+    </div>
+    <app-hero-search />
+  </app-dashboard>
+</mock-render>
+`;

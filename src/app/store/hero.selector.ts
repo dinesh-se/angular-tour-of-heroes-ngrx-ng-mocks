@@ -33,3 +33,13 @@ export const selectHeroById = (id: number) => createSelector(
   selectAllHeroes,
   (heroes: Hero[]) => heroes.find(hero => hero.id === id)
 );
+
+export const HeroSelectors = {
+  selectHeroesState,
+  selectAllHeroes,
+  selectHeroesLoading,
+  selectHeroesError,
+  selectHeroById,
+  selectQuery,
+  selectSearchResults,
+};
